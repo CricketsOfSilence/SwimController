@@ -147,7 +147,10 @@ namespace SwimController
 
         private void write(string fileName, string text)
         {
-            System.IO.File.WriteAllText(fileName, text);
+            if (File.Exists(fileName))
+            {
+                System.IO.File.WriteAllText(fileName, text);
+            }
         }
 
         private void HeatController_Load(object sender, EventArgs e)
