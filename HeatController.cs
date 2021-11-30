@@ -29,6 +29,7 @@ namespace SwimController
         public HeatController()
         {
             InitializeComponent();
+            heats = new List<Heat>();
             heatNumber = 0;
         }
 
@@ -213,7 +214,8 @@ namespace SwimController
                         swimmerHeatDataFilePath = configureController.SwimmerHeatDataFilePath;
                     }
 
-                    if (!configureController.EventNameFilePath.Equals("...") {
+                    if (!configureController.EventNameFilePath.Equals("..."))
+                    {
                         eventNamePath = configureController.EventNameFilePath;
                     }
 
@@ -248,6 +250,7 @@ namespace SwimController
                     }                 
 
                     LoadData();
+                    configureController.Close();
                 }            
             }                      
         }
@@ -271,6 +274,9 @@ namespace SwimController
                 heat.Lane6Name = split[7];
                 heats.Add(heat);
             }
+
+            updateHeats();
+            updateButtonStatus();
         }
     }
 }

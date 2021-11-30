@@ -77,6 +77,7 @@ namespace SwimController
             this.nextHeatButton.TabIndex = 0;
             this.nextHeatButton.Text = "Next Heat";
             this.nextHeatButton.UseVisualStyleBackColor = true;
+            this.nextHeatButton.Click += new System.EventHandler(this.nextHeatButton_Click);
             // 
             // previousHeatButton
             // 
@@ -87,6 +88,7 @@ namespace SwimController
             this.previousHeatButton.TabIndex = 1;
             this.previousHeatButton.Text = "Previous Heat";
             this.previousHeatButton.UseVisualStyleBackColor = true;
+            this.previousHeatButton.Click += new System.EventHandler(this.previousHeatButton_Click);
             // 
             // currentEventLabel
             // 
