@@ -10,6 +10,7 @@ namespace SwimController
     {
         public string EventName { get; set; }
         public string Record { get; set; }
+        public string HeatNumber { get; set; }
         public string Lane1Name { get; set; }
         public string Lane2Name { get; set; }
         public string Lane3Name { get; set; }

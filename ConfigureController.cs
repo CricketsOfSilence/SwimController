@@ -12,19 +12,21 @@ namespace SwimController
 {
     public partial class ConfigureController : Form
     {
-        public string SwimmerHeatDataFilePath = "";
-        public string EventNameFilePath = "";
-        public string Lane1FilePath = "";
-        public string Lane2FilePath = "";
-        public string Lane3FilePath = "";
-        public string Lane4FilePath = "";
-        public string Lane5FilePath = "";
-        public string Lane6FilePath = "";
+        private ConfigurationModel config;      
 
-
-        public ConfigureController()
+        public ConfigureController(ConfigurationModel config)
         {
             InitializeComponent();
+            this.config = config;
+            this.swimmerHeatDataLabel.Text = config.HeatSheetFilePath;
+            this.eventNameLabel.Text = config.EventNameFilePath;
+            this.heatNumberLabel.Text = config.HeatNumberFilePath;
+            this.lane1Label.Text = config.LaneFilePaths[0];
+            this.lane2Label.Text = config.LaneFilePaths[1];
+            this.lane3Label.Text = config.LaneFilePaths[2];
+            this.lane4Label.Text = config.LaneFilePaths[3];
+            this.lane5Label.Text = config.LaneFilePaths[4];
+            this.lane6Label.Text = config.LaneFilePaths[5];
         }
 
         private string openCsvFileDialog()
@@ -67,50 +69,69 @@ namespace SwimController
 
         private void loadSwimmerHeatDataButton_Click(object sender, EventArgs e)
         {
-            SwimmerHeatDataFilePath = openCsvFileDialog();
-            swimmerHeatDataLabel.Text = SwimmerHeatDataFilePath;
+            config.HeatSheetFilePath = openCsvFileDialog();            
+            swimmerHeatDataLabel.Text = config.HeatSheetFilePath;
+            swimmerHeatDataLabel.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void setEventNameButton_Click(object sender, EventArgs e)
         {
-            EventNameFilePath = openTextFileDialog();
-            eventNameLabel.Text = EventNameFilePath;
+            config.EventNameFilePath = openTextFileDialog();
+            eventNameLabel.Text = config.EventNameFilePath;
+            eventNameLabel.BorderStyle = BorderStyle.FixedSingle;
         }
         private void setLane1Location_Click(object sender, EventArgs e)
         {
-            Lane1FilePath = openTextFileDialog();
-            lane1Label.Text = Lane1FilePath;
+            config.LaneFilePaths[0] = openTextFileDialog();
+            lane1Label.Text = config.LaneFilePaths[0];
+            lane1Label.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void setLane2Location_Click(object sender, EventArgs e)
         {
-            Lane2FilePath = openTextFileDialog();
-            lane2Label.Text = Lane2FilePath;
+            config.LaneFilePaths[1] = openTextFileDialog();
+            lane2Label.Text = config.LaneFilePaths[1];
+            lane2Label.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void setLane3Location_Click(object sender, EventArgs e)
         {
-            Lane3FilePath = openTextFileDialog();
-            lane3Label.Text = Lane3FilePath;
+            config.LaneFilePaths[2] = openTextFileDialog();
+            lane3Label.Text = config.LaneFilePaths[2];
+            lane3Label.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void setLane4Location_Click(object sender, EventArgs e)
         {
-            Lane4FilePath = openTextFileDialog();
-            lane4Label.Text = Lane4FilePath;
+            config.LaneFilePaths[3] = openTextFileDialog();
+            lane4Label.Text = config.LaneFilePaths[3];
+            lane4Label.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void setLane5Location_Click(object sender, EventArgs e)
         {
-            Lane5FilePath = openTextFileDialog();
-            lane5Label.Text = Lane5FilePath;
+            config.LaneFilePaths[4] = openTextFileDialog();
+            lane5Label.Text = config.LaneFilePaths[4];
+            lane5Label.BorderStyle = BorderStyle.FixedSingle;
         }
 
         private void setLane6Location_Click(object sender, EventArgs e)
         {
-            Lane6FilePath = openTextFileDialog();
-            lane6Label.Text = Lane6FilePath;
+            config.LaneFilePaths[5] = openTextFileDialog();
+            lane6Label.Text = config.LaneFilePaths[5];
+            lane6Label.BorderStyle = BorderStyle.FixedSingle;
         }
 
+        public ConfigurationModel GetConfiguration()
+        {           
+            return this.config;
+        }
+
+        private void heatNumberButton_Click(object sender, EventArgs e)
+        {
+            config.HeatNumberFilePath = openTextFileDialog();
+            heatNumberLabel.Text = config.HeatNumberFilePath;
+            heatNumberLabel.BorderStyle = BorderStyle.FixedSingle;
+        }
     }
 }

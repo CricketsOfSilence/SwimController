@@ -13,28 +13,50 @@ namespace SwimController
 {
     public partial class HeatController : Form
     {
+        private const string CONFIG_DIR = "SwimController";
+        private const string CONFIG_FILE = "config.ini";
         private const string NO_HEAT = "N/A";
 
-        private string swimmerHeatDataFilePath = "";
-        private string eventNamePath = "eventname.txt";
-        private string lane1Path = "lane1.txt";
-        private string lane2Path = "lane2.txt";
-        private string lane3Path = "lane3.txt";
-        private string lane4Path = "lane4.txt";
-        private string lane5Path = "lane5.txt";
-        private string lane6Path = "lane6.txt";
+        private string heatSheetFilePath = "";
+        private string eventNamePath = "";
+        private string lane1Path = "";
+        private string lane2Path = "";
+        private string lane3Path = "";
+        private string lane4Path = "";
+        private string lane5Path = "";
+        private string lane6Path = "";
+        private string recordFilePath = "";
+        private string heatNumberFilePath = "";
+
+        ConfigurationModel config;
+
+        private int spacesToAppend = 4;
         
-        private int heatNumber;
+        private int eventIndex;
         private readonly List<Heat> heats;
         public HeatController()
         {
             InitializeComponent();
             heats = new List<Heat>();
-            heatNumber = 0;
+            eventIndex = 0;
+            config = new ConfigurationModel();
         }
 
         public HeatController(String basePath, List<Heat> heats) : this()
         {
+            config = new ConfigurationModel()
+            {
+                EventNameFilePath = Path.Combine(basePath, eventNamePath),
+                LaneFilePaths = new string[] {
+                    Path.Combine(basePath, lane1Path),
+                    Path.Combine(basePath, lane2Path),
+                    Path.Combine(basePath, lane3Path),
+                    Path.Combine(basePath, lane4Path),
+                    Path.Combine(basePath, lane5Path),
+                    Path.Combine(basePath, lane6Path)
+                }
+            };
+
             this.eventNamePath = Path.Combine(basePath, eventNamePath);
             this.lane1Path = Path.Combine(basePath, lane1Path);
             this.lane2Path = Path.Combine(basePath, lane2Path);
@@ -56,22 +78,22 @@ namespace SwimController
 
         private void updateHeats()
         {
-            if (heatNumber >= 0 && heatNumber < heats.Count)
+            if (eventIndex >= 0 && eventIndex < heats.Count)
             {
-                Heat currentHeat = heats[heatNumber];
+                Heat currentHeat = heats[eventIndex];
                 
-                if (heatNumber - 1 >= 0)
+                if (eventIndex - 1 >= 0)
                 {
-                    previousHeatName.Text = heats[heatNumber - 1].EventName;
+                    previousHeatName.Text = heats[eventIndex - 1].EventName;
                 }
                 else
                 {
                     previousHeatName.Text = NO_HEAT;
                 }
 
-                if (heatNumber + 1 < heats.Count)
+                if (eventIndex + 1 < heats.Count)
                 {
-                    nextHeatName.Text = heats[heatNumber + 1].EventName;
+                    nextHeatName.Text = heats[eventIndex + 1].EventName;
                 }
                 else
                 {
@@ -84,8 +106,8 @@ namespace SwimController
 
         public void previousHeatButton_Click(object sender, EventArgs e)
         {
-            if (heatNumber >= 0) {
-                heatNumber--;
+            if (eventIndex >= 0) {
+                eventIndex--;
                 updateHeats();
                 updateButtonStatus();
             }           
@@ -93,9 +115,9 @@ namespace SwimController
 
         public void nextHeatButton_Click(object sender, EventArgs e)
         {
-            if (heatNumber < heats.Count)
+            if (eventIndex < heats.Count)
             {
-                heatNumber++;
+                eventIndex++;
                 updateHeats();
                 updateButtonStatus();
             }                     
@@ -103,7 +125,7 @@ namespace SwimController
 
         private void updateButtonStatus()
         {
-            if (heatNumber <= 0)
+            if (eventIndex <= 0)
             {
                 previousHeatButton.Enabled = false;
                 previousHeatName.Text = NO_HEAT;
@@ -111,10 +133,10 @@ namespace SwimController
             else
             {
                 previousHeatButton.Enabled = true;
-                previousHeatName.Text = heats[heatNumber - 1].EventName;
+                previousHeatName.Text = heats[eventIndex - 1].EventName;
             }
 
-            if (heatNumber >= heats.Count - 1)
+            if (eventIndex >= heats.Count - 1)
             {
                 nextHeatButton.Enabled = false;
                 nextHeatName.Text = NO_HEAT;
@@ -122,7 +144,7 @@ namespace SwimController
             else
             {
                 nextHeatButton.Enabled = true;
-                nextHeatName.Text = heats[heatNumber + 1].EventName;
+                nextHeatName.Text = heats[eventIndex + 1].EventName;
             }
         }
 
@@ -149,53 +171,119 @@ namespace SwimController
         {
             if (File.Exists(fileName))
             {
-                System.IO.File.WriteAllText(fileName, text);
+                System.IO.File.WriteAllText(fileName, text.PadRight(spacesToAppend));
             }
         }
 
         private void HeatController_Load(object sender, EventArgs e)
         {
-
+            try
+            {
+                string appDataFolderPath = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                if (File.Exists(Path.Combine(appDataFolderPath, CONFIG_DIR, CONFIG_FILE)))
+                {
+                    string[] rows = File.ReadAllLines(Path.Combine(appDataFolderPath, CONFIG_DIR, CONFIG_FILE));
+                    foreach (String s in rows)
+                    {
+                        string[] split = s.Split('=');
+                        if (split.Length > 1)
+                        {
+                            switch (split[0])
+                            {
+                                case "heatSheet":
+                                    heatSheetFilePath = split[1];
+                                    break;
+                                case "eventName":
+                                    eventNamePath = split[1];
+                                    break;
+                                case "record":
+                                    recordFilePath = split[1];
+                                    break;
+                                case "heat":
+                                    heatNumberFilePath = split[1];
+                                    break;
+                                case "lane1":
+                                    lane1Path = split[1];
+                                    break;
+                                case "lane2":
+                                    lane2Path = split[1];
+                                    break;
+                                case "lane3":
+                                    lane3Path = split[1];
+                                    break;
+                                case "lane4":
+                                    lane4Path = split[1];
+                                    break;
+                                case "lane5":
+                                    lane5Path = split[1];
+                                    break;
+                                case "lane6":
+                                    lane6Path = split[1];
+                                    break;
+                            }
+                        }
+                    }
+                    config = new ConfigurationModel()
+                    {
+                        HeatSheetFilePath = heatSheetFilePath,
+                        EventNameFilePath = eventNamePath,
+                        RecordFilePath = recordFilePath,
+                        HeatNumberFilePath = heatNumberFilePath,
+                        LaneFilePaths = new string[]
+                        {
+                            lane1Path,
+                            lane2Path,
+                            lane3Path,
+                            lane4Path,
+                            lane5Path,
+                            lane6Path
+                        }
+                    };
+                    LoadData();
+                }
+            } catch (Exception exception) { 
+                // ignore and log error
+            }
         }
         private void updateEventNameButton_Click(object sender, EventArgs e)
         {
-            heats[heatNumber].EventName = updateEventNameTextBox.Text;
-            write(eventNamePath, heats[heatNumber].EventName);
+            heats[eventIndex].EventName = updateEventNameTextBox.Text;
+            write(eventNamePath, heats[eventIndex].EventName);
         }
 
         private void lane1UpdateButton_Click(object sender, EventArgs e)
         {
-            heats[heatNumber].Lane1Name = lane1TextBox.Text;
-            write(lane1Path, heats[heatNumber].Lane1Name);
+            heats[eventIndex].Lane1Name = lane1TextBox.Text;
+            write(lane1Path, heats[eventIndex].Lane1Name);
         }
         private void lane2UpdateButton_Click(object sender, EventArgs e)
         {
-            heats[heatNumber].Lane1Name = lane2TextBox.Text;
-            write(lane2Path, heats[heatNumber].Lane2Name);
+            heats[eventIndex].Lane2Name = lane2TextBox.Text;
+            write(lane2Path, heats[eventIndex].Lane2Name);
         }
 
         private void lane3UpdateButton_Click(object sender, EventArgs e)
         {
-            heats[heatNumber].Lane3Name = lane3TextBox.Text;
-            write(lane3Path, heats[heatNumber].Lane3Name);
+            heats[eventIndex].Lane3Name = lane3TextBox.Text;
+            write(lane3Path, heats[eventIndex].Lane3Name);
         }                
 
         private void lane4UpdateButton_Click(object sender, EventArgs e)
         {
-            heats[heatNumber].Lane4Name = lane4TextBox.Text;
-            write(lane4Path, heats[heatNumber].Lane4Name);
+            heats[eventIndex].Lane4Name = lane4TextBox.Text;
+            write(lane4Path, heats[eventIndex].Lane4Name);
         }
 
         private void lane5UpdateButton_Click(object sender, EventArgs e)
         {
-            heats[heatNumber].Lane5Name = lane5TextBox.Text;
-            write(lane5Path, heats[heatNumber].Lane5Name);
+            heats[eventIndex].Lane5Name = lane5TextBox.Text;
+            write(lane5Path, heats[eventIndex].Lane5Name);
         }
 
         private void lane6UpdateButton_Click(object sender, EventArgs e)
         {
-            heats[heatNumber].Lane6Name = lane6TextBox.Text;
-            write(lane6Path, heats[heatNumber].Lane6Name);
+            heats[eventIndex].Lane6Name = lane6TextBox.Text;
+            write(lane6Path, heats[eventIndex].Lane6Name);
         }
 
         private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
@@ -205,7 +293,7 @@ namespace SwimController
 
         private void configureButton_Click(object sender, EventArgs e)
         {
-            using (ConfigureController configureController = new ConfigureController())
+            using (ConfigureController configureController = new ConfigureController(config))
             {
                 configureController.Show();
                 configureController.Visible = false;
@@ -213,68 +301,132 @@ namespace SwimController
                 if (configureController.ShowDialog() == DialogResult.OK)
                 {
 
-                    if (!configureController.SwimmerHeatDataFilePath.Equals("...")) {
-                        swimmerHeatDataFilePath = configureController.SwimmerHeatDataFilePath;
+                    ConfigurationModel config = configureController.GetConfiguration();
+
+                    if (!String.IsNullOrEmpty(config.HeatSheetFilePath))
+                    {
+                        heatSheetFilePath = config.HeatSheetFilePath;
                     }
 
-                    if (!configureController.EventNameFilePath.Equals("..."))
+                    if (!String.IsNullOrEmpty(config.EventNameFilePath))
                     {
-                        eventNamePath = configureController.EventNameFilePath;
+                        eventNamePath = config.EventNameFilePath;
                     }
 
-                    if (!configureController.Lane1FilePath.Equals("..."))
+                    if (!String.IsNullOrEmpty(config.HeatNumberFilePath))
                     {
-                        lane1Path = configureController.Lane1FilePath;
+                        heatNumberFilePath = config.HeatNumberFilePath;
                     }
 
-                    if (!configureController.Lane2FilePath.Equals("..."))
-                    {
-                        lane2Path = configureController.Lane2FilePath;
+                    if (!String.IsNullOrEmpty(config.RecordFilePath)) {
+                        recordFilePath = config.RecordFilePath;
                     }
 
-                    if (!configureController.Lane3FilePath.Equals("..."))
+                    if (!String.IsNullOrEmpty(config.LaneFilePaths[0]))
                     {
-                        lane3Path = configureController.Lane3FilePath;
+                        lane1Path = config.LaneFilePaths[0];
                     }
 
-                    if (!configureController.Lane4FilePath.Equals("..."))
+                    if (!String.IsNullOrEmpty(config.LaneFilePaths[1]))
                     {
-                        lane4Path = configureController.Lane4FilePath;
+                        lane2Path = config.LaneFilePaths[1];
                     }
 
-                    if (!configureController.Lane5FilePath.Equals("..."))
+                    if (!String.IsNullOrEmpty(config.LaneFilePaths[2]))
                     {
-                        lane5Path = configureController.Lane5FilePath;
+                        lane3Path = config.LaneFilePaths[2];
                     }
 
-                    if (!configureController.Lane6FilePath.Equals("..."))
+                    if (!String.IsNullOrEmpty(config.LaneFilePaths[3]))
                     {
-                        lane6Path = configureController.Lane6FilePath;
-                    }                 
+                        lane4Path = config.LaneFilePaths[3];
+                    }
 
+                    if (!String.IsNullOrEmpty(config.LaneFilePaths[4]))
+                    {
+                        lane5Path = config.LaneFilePaths[4];
+                    }
+
+                    if (!String.IsNullOrEmpty(config.LaneFilePaths[5]))
+                    {
+                        lane6Path = config.LaneFilePaths[5];
+                    }
+                    writeToConfigFile();
                     LoadData();
                     configureController.Close();
                 }            
             }                      
         }
+        private void writeToConfigFile()
+        {
+            try
+            {
+                string appDataFolderPath = System.Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+                StringBuilder builder = new StringBuilder();
+
+                if (!String.IsNullOrEmpty(heatSheetFilePath))
+                    builder.AppendFormat("heatSheet={0}\n", heatSheetFilePath);
+                
+                if (!String.IsNullOrEmpty(eventNamePath))
+                    builder.AppendFormat("eventName={0}\n", eventNamePath);
+                
+                if (!String.IsNullOrEmpty(recordFilePath))
+                    builder.AppendFormat("record={0}\n", recordFilePath);
+                
+                if (!String.IsNullOrEmpty(heatNumberFilePath))
+                    builder.AppendFormat("heat={0}\n", heatNumberFilePath);
+                
+                if (!String.IsNullOrEmpty(lane1Path))
+                    builder.AppendFormat("lane1={0}\n", lane1Path);
+                
+                if (!String.IsNullOrEmpty(lane2Path))
+                    builder.AppendFormat("lane2={0}\n", lane2Path);
+                
+                if (!String.IsNullOrEmpty(lane3Path))
+                    builder.AppendFormat("lane3={0}\n", lane3Path);
+                
+                if (!String.IsNullOrEmpty(lane4Path))
+                    builder.AppendFormat("lane4={0}\n", lane4Path);
+                
+                if (!String.IsNullOrEmpty(lane5Path))
+                    builder.AppendFormat("lane5={0}\n", lane5Path);
+                
+                if (!String.IsNullOrEmpty(lane6Path))
+                    builder.AppendFormat("lane6={0}\n", lane6Path);
+
+                if (!Directory.Exists(Path.Combine(appDataFolderPath, CONFIG_DIR))) {
+                    Directory.CreateDirectory(Path.Combine(appDataFolderPath, CONFIG_DIR));
+                }
+
+                File.WriteAllText(Path.Combine(appDataFolderPath, CONFIG_DIR, CONFIG_FILE),
+                    builder.ToString());
+            } 
+            catch (Exception exception)
+            {
+                System.Console.WriteLine("Exception: " + exception.Message);
+                // ignore
+            }
+        }
 
         private void LoadData()
         {
             heats.Clear();
-            string[] lines = System.IO.File.ReadAllLines(swimmerHeatDataFilePath);
+            string[] lines = File.ReadAllLines(heatSheetFilePath);
 
             foreach (string line in lines)
             {
                 string[] split = line.Split(',');
-                Heat heat = new Heat();
-                heat.EventName = split[0];
-                heat.Record = split[1];
-                heat.Lane1Name = split[2];
-                heat.Lane2Name = split[3];
-                heat.Lane3Name = split[4];
-                heat.Lane4Name = split[5];
-                heat.Lane5Name = split[6];
-                heat.Lane6Name = split[7];
+                Heat heat = new Heat
+                {
+                    EventName = split[0],
+                    Record = split[1],
+                    Lane1Name = split[2],
+                    Lane2Name = split[3],
+                    Lane3Name = split[4],
+                    Lane4Name = split[5],
+                    Lane5Name = split[6],
+                    Lane6Name = split[7]
+                };
                 heats.Add(heat);
             }
 
