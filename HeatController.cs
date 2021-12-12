@@ -33,16 +33,16 @@ namespace SwimController
         private int spacesToAppend = 4;
         
         private int eventIndex;
-        private readonly List<Heat> heats;
+        private readonly List<Event> heats;
         public HeatController()
         {
             InitializeComponent();
-            heats = new List<Heat>();
+            heats = new List<Event>();
             eventIndex = 0;
             config = new ConfigurationModel();
         }
 
-        public HeatController(String basePath, List<Heat> heats) : this()
+        public HeatController(String basePath, List<Event> heats) : this()
         {
             config = new ConfigurationModel()
             {
@@ -80,7 +80,7 @@ namespace SwimController
         {
             if (eventIndex >= 0 && eventIndex < heats.Count)
             {
-                Heat currentHeat = heats[eventIndex];
+                Event currentHeat = heats[eventIndex];
                 
                 if (eventIndex - 1 >= 0)
                 {
@@ -148,7 +148,7 @@ namespace SwimController
             }
         }
 
-        private void loadHeat(Heat heat)
+        private void loadHeat(Event heat)
         {           
             write(eventNamePath, heat.EventName);
             updateEventNameTextBox.Text = heat.EventName;
@@ -416,7 +416,7 @@ namespace SwimController
             foreach (string line in lines)
             {
                 string[] split = line.Split(',');
-                Heat heat = new Heat
+                Event heat = new Event
                 {
                     EventName = split[0],
                     Record = split[1],

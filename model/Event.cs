@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SwimController
 {
-    public class Heat
+    public class Event
     {
         public string EventName { get; set; }
         public string Record { get; set; }

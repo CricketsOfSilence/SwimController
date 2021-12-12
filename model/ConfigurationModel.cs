@@ -8,6 +8,12 @@ namespace SwimController
 {
     public class ConfigurationModel
     {
+
+        public ConfigurationModel()
+        {
+            LaneFilePaths = new string[6];
+        }
+
         public string HeatSheetFilePath { get; set; }
         public string EventNameFilePath { get; set; }
 
