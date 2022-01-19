@@ -1,7 +1,10 @@
 ﻿
-namespace SwimController
+using System.Windows.Forms;
+using ObsOverlay.model;
+
+namespace ObsOverlay
 {
-    partial class HeatController
+    partial class SwimModelView
     {
         /// <summary>
         /// Required designer variable.
@@ -60,24 +63,27 @@ namespace SwimController
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.configureButton = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configureFilePathsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadEventDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // nextHeatButton
             // 
             this.nextHeatButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.nextHeatButton.Location = new System.Drawing.Point(640, 6);
+            this.nextHeatButton.Location = new System.Drawing.Point(639, 6);
             this.nextHeatButton.Name = "nextHeatButton";
             this.nextHeatButton.Size = new System.Drawing.Size(168, 81);
             this.nextHeatButton.TabIndex = 0;
             this.nextHeatButton.Text = "Next Heat";
             this.nextHeatButton.UseVisualStyleBackColor = true;
-            this.nextHeatButton.Click += new System.EventHandler(this.nextHeatButton_Click);
+            this.nextHeatButton.Click += new System.EventHandler(this.NextHeatButton_Click);
             // 
             // previousHeatButton
             // 
@@ -88,7 +94,7 @@ namespace SwimController
             this.previousHeatButton.TabIndex = 1;
             this.previousHeatButton.Text = "Previous Heat";
             this.previousHeatButton.UseVisualStyleBackColor = true;
-            this.previousHeatButton.Click += new System.EventHandler(this.previousHeatButton_Click);
+            this.previousHeatButton.Click += new System.EventHandler(this.PreviousHeatButton_Click);
             // 
             // currentEventLabel
             // 
@@ -108,7 +114,7 @@ namespace SwimController
             this.eventNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.eventNameLabel.AutoSize = true;
             this.eventNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.eventNameLabel.Location = new System.Drawing.Point(23, 3);
+            this.eventNameLabel.Location = new System.Drawing.Point(39, 3);
             this.eventNameLabel.Name = "eventNameLabel";
             this.eventNameLabel.Size = new System.Drawing.Size(52, 26);
             this.eventNameLabel.TabIndex = 4;
@@ -117,7 +123,7 @@ namespace SwimController
             // updateEventNameTextBox
             // 
             this.updateEventNameTextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.updateEventNameTextBox.Location = new System.Drawing.Point(82, 6);
+            this.updateEventNameTextBox.Location = new System.Drawing.Point(129, 6);
             this.updateEventNameTextBox.Name = "updateEventNameTextBox";
             this.updateEventNameTextBox.Size = new System.Drawing.Size(284, 20);
             this.updateEventNameTextBox.TabIndex = 5;
@@ -125,29 +131,27 @@ namespace SwimController
             // updateEventNameButton
             // 
             this.updateEventNameButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.updateEventNameButton.Location = new System.Drawing.Point(373, 6);
+            this.updateEventNameButton.Location = new System.Drawing.Point(451, 6);
             this.updateEventNameButton.Name = "updateEventNameButton";
             this.updateEventNameButton.Size = new System.Drawing.Size(75, 20);
             this.updateEventNameButton.TabIndex = 6;
             this.updateEventNameButton.Text = "Update";
             this.updateEventNameButton.UseVisualStyleBackColor = true;
-            this.updateEventNameButton.Click += new System.EventHandler(this.updateEventNameButton_Click);
             // 
             // lane1UpdateButton
             // 
             this.lane1UpdateButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lane1UpdateButton.Location = new System.Drawing.Point(373, 39);
+            this.lane1UpdateButton.Location = new System.Drawing.Point(451, 39);
             this.lane1UpdateButton.Name = "lane1UpdateButton";
             this.lane1UpdateButton.Size = new System.Drawing.Size(75, 20);
             this.lane1UpdateButton.TabIndex = 9;
             this.lane1UpdateButton.Text = "Update";
             this.lane1UpdateButton.UseVisualStyleBackColor = true;
-            this.lane1UpdateButton.Click += new System.EventHandler(this.lane1UpdateButton_Click);
             // 
             // lane1TextBox
             // 
             this.lane1TextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lane1TextBox.Location = new System.Drawing.Point(82, 39);
+            this.lane1TextBox.Location = new System.Drawing.Point(129, 39);
             this.lane1TextBox.Name = "lane1TextBox";
             this.lane1TextBox.Size = new System.Drawing.Size(284, 20);
             this.lane1TextBox.TabIndex = 8;
@@ -157,7 +161,7 @@ namespace SwimController
             this.lane1Label.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lane1Label.AutoSize = true;
             this.lane1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lane1Label.Location = new System.Drawing.Point(25, 43);
+            this.lane1Label.Location = new System.Drawing.Point(41, 43);
             this.lane1Label.Name = "lane1Label";
             this.lane1Label.Size = new System.Drawing.Size(50, 13);
             this.lane1Label.TabIndex = 7;
@@ -166,18 +170,17 @@ namespace SwimController
             // lane2UpdateButton
             // 
             this.lane2UpdateButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lane2UpdateButton.Location = new System.Drawing.Point(373, 72);
+            this.lane2UpdateButton.Location = new System.Drawing.Point(451, 72);
             this.lane2UpdateButton.Name = "lane2UpdateButton";
             this.lane2UpdateButton.Size = new System.Drawing.Size(75, 20);
             this.lane2UpdateButton.TabIndex = 12;
             this.lane2UpdateButton.Text = "Update";
             this.lane2UpdateButton.UseVisualStyleBackColor = true;
-            this.lane2UpdateButton.Click += new System.EventHandler(this.lane2UpdateButton_Click);
             // 
             // lane2TextBox
             // 
             this.lane2TextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lane2TextBox.Location = new System.Drawing.Point(82, 72);
+            this.lane2TextBox.Location = new System.Drawing.Point(129, 72);
             this.lane2TextBox.Name = "lane2TextBox";
             this.lane2TextBox.Size = new System.Drawing.Size(284, 20);
             this.lane2TextBox.TabIndex = 11;
@@ -187,7 +190,7 @@ namespace SwimController
             this.lane2Label.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lane2Label.AutoSize = true;
             this.lane2Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lane2Label.Location = new System.Drawing.Point(25, 76);
+            this.lane2Label.Location = new System.Drawing.Point(41, 76);
             this.lane2Label.Name = "lane2Label";
             this.lane2Label.Size = new System.Drawing.Size(50, 13);
             this.lane2Label.TabIndex = 10;
@@ -196,18 +199,17 @@ namespace SwimController
             // lane3UpdateButton
             // 
             this.lane3UpdateButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lane3UpdateButton.Location = new System.Drawing.Point(373, 105);
+            this.lane3UpdateButton.Location = new System.Drawing.Point(451, 105);
             this.lane3UpdateButton.Name = "lane3UpdateButton";
             this.lane3UpdateButton.Size = new System.Drawing.Size(75, 20);
             this.lane3UpdateButton.TabIndex = 15;
             this.lane3UpdateButton.Text = "Update";
             this.lane3UpdateButton.UseVisualStyleBackColor = true;
-            this.lane3UpdateButton.Click += new System.EventHandler(this.lane3UpdateButton_Click);
             // 
             // lane3TextBox
             // 
             this.lane3TextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lane3TextBox.Location = new System.Drawing.Point(82, 105);
+            this.lane3TextBox.Location = new System.Drawing.Point(129, 105);
             this.lane3TextBox.Name = "lane3TextBox";
             this.lane3TextBox.Size = new System.Drawing.Size(284, 20);
             this.lane3TextBox.TabIndex = 14;
@@ -217,7 +219,7 @@ namespace SwimController
             this.lane3Label.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lane3Label.AutoSize = true;
             this.lane3Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lane3Label.Location = new System.Drawing.Point(25, 109);
+            this.lane3Label.Location = new System.Drawing.Point(41, 109);
             this.lane3Label.Name = "lane3Label";
             this.lane3Label.Size = new System.Drawing.Size(50, 13);
             this.lane3Label.TabIndex = 13;
@@ -226,18 +228,17 @@ namespace SwimController
             // lane4UpdateButton
             // 
             this.lane4UpdateButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lane4UpdateButton.Location = new System.Drawing.Point(373, 138);
+            this.lane4UpdateButton.Location = new System.Drawing.Point(451, 138);
             this.lane4UpdateButton.Name = "lane4UpdateButton";
             this.lane4UpdateButton.Size = new System.Drawing.Size(75, 20);
             this.lane4UpdateButton.TabIndex = 18;
             this.lane4UpdateButton.Text = "Update";
             this.lane4UpdateButton.UseVisualStyleBackColor = true;
-            this.lane4UpdateButton.Click += new System.EventHandler(this.lane4UpdateButton_Click);
             // 
             // lane4TextBox
             // 
             this.lane4TextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lane4TextBox.Location = new System.Drawing.Point(82, 138);
+            this.lane4TextBox.Location = new System.Drawing.Point(129, 138);
             this.lane4TextBox.Name = "lane4TextBox";
             this.lane4TextBox.Size = new System.Drawing.Size(284, 20);
             this.lane4TextBox.TabIndex = 17;
@@ -247,7 +248,7 @@ namespace SwimController
             this.lane4Label.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lane4Label.AutoSize = true;
             this.lane4Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lane4Label.Location = new System.Drawing.Point(25, 142);
+            this.lane4Label.Location = new System.Drawing.Point(41, 142);
             this.lane4Label.Name = "lane4Label";
             this.lane4Label.Size = new System.Drawing.Size(50, 13);
             this.lane4Label.TabIndex = 16;
@@ -256,18 +257,17 @@ namespace SwimController
             // lane5UpdateButton
             // 
             this.lane5UpdateButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lane5UpdateButton.Location = new System.Drawing.Point(373, 171);
+            this.lane5UpdateButton.Location = new System.Drawing.Point(451, 171);
             this.lane5UpdateButton.Name = "lane5UpdateButton";
             this.lane5UpdateButton.Size = new System.Drawing.Size(75, 20);
             this.lane5UpdateButton.TabIndex = 21;
             this.lane5UpdateButton.Text = "Update";
             this.lane5UpdateButton.UseVisualStyleBackColor = true;
-            this.lane5UpdateButton.Click += new System.EventHandler(this.lane5UpdateButton_Click);
             // 
             // lane5TextBox
             // 
             this.lane5TextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lane5TextBox.Location = new System.Drawing.Point(82, 171);
+            this.lane5TextBox.Location = new System.Drawing.Point(129, 171);
             this.lane5TextBox.Name = "lane5TextBox";
             this.lane5TextBox.Size = new System.Drawing.Size(284, 20);
             this.lane5TextBox.TabIndex = 20;
@@ -277,7 +277,7 @@ namespace SwimController
             this.lane5Label.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lane5Label.AutoSize = true;
             this.lane5Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lane5Label.Location = new System.Drawing.Point(25, 175);
+            this.lane5Label.Location = new System.Drawing.Point(41, 175);
             this.lane5Label.Name = "lane5Label";
             this.lane5Label.Size = new System.Drawing.Size(50, 13);
             this.lane5Label.TabIndex = 19;
@@ -286,18 +286,17 @@ namespace SwimController
             // lane6UpdateButton
             // 
             this.lane6UpdateButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lane6UpdateButton.Location = new System.Drawing.Point(373, 205);
+            this.lane6UpdateButton.Location = new System.Drawing.Point(451, 205);
             this.lane6UpdateButton.Name = "lane6UpdateButton";
             this.lane6UpdateButton.Size = new System.Drawing.Size(75, 20);
             this.lane6UpdateButton.TabIndex = 24;
             this.lane6UpdateButton.Text = "Update";
             this.lane6UpdateButton.UseVisualStyleBackColor = true;
-            this.lane6UpdateButton.Click += new System.EventHandler(this.lane6UpdateButton_Click);
             // 
             // lane6TextBox
             // 
             this.lane6TextBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.lane6TextBox.Location = new System.Drawing.Point(82, 205);
+            this.lane6TextBox.Location = new System.Drawing.Point(129, 205);
             this.lane6TextBox.Name = "lane6TextBox";
             this.lane6TextBox.Size = new System.Drawing.Size(284, 20);
             this.lane6TextBox.TabIndex = 23;
@@ -307,7 +306,7 @@ namespace SwimController
             this.lane6Label.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.lane6Label.AutoSize = true;
             this.lane6Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lane6Label.Location = new System.Drawing.Point(25, 209);
+            this.lane6Label.Location = new System.Drawing.Point(41, 209);
             this.lane6Label.Name = "lane6Label";
             this.lane6Label.Size = new System.Drawing.Size(50, 13);
             this.lane6Label.TabIndex = 22;
@@ -383,7 +382,7 @@ namespace SwimController
             this.tableLayoutPanel1.Controls.Add(this.lane4TextBox, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.lane3TextBox, 1, 3);
             this.tableLayoutPanel1.Controls.Add(this.lane6UpdateButton, 2, 6);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 146);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 161);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 7;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
@@ -394,9 +393,8 @@ namespace SwimController
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 14.28571F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(718, 233);
-            this.tableLayoutPanel1.TabIndex = 29;
-            this.tableLayoutPanel1.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel1_Paint);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(869, 233);
+            this.tableLayoutPanel1.TabIndex = 29;            
             // 
             // tableLayoutPanel2
             // 
@@ -409,12 +407,12 @@ namespace SwimController
             this.tableLayoutPanel2.Controls.Add(this.nextHeatButton, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.previousHeatButton, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.currentEventLabel, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 53);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(12, 68);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(870, 94);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(869, 94);
             this.tableLayoutPanel2.TabIndex = 30;
             // 
             // tableLayoutPanel3
@@ -430,7 +428,7 @@ namespace SwimController
             this.tableLayoutPanel3.Controls.Add(this.previousHeatName, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.nextHeatLabel, 3, 0);
             this.tableLayoutPanel3.Controls.Add(this.nextHeatName, 4, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(12, 12);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(12, 27);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
@@ -438,48 +436,84 @@ namespace SwimController
             this.tableLayoutPanel3.Size = new System.Drawing.Size(869, 41);
             this.tableLayoutPanel3.TabIndex = 31;
             // 
-            // panel1
+            // menuStrip1
             // 
-            this.panel1.Controls.Add(this.configureButton);
-            this.panel1.Location = new System.Drawing.Point(739, 146);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(142, 233);
-            this.panel1.TabIndex = 32;
+            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(895, 24);
+            this.menuStrip1.TabIndex = 33;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // configureButton
+            // fileToolStripMenuItem
             // 
-            this.configureButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.configureButton.Location = new System.Drawing.Point(3, 197);
-            this.configureButton.Name = "configureButton";
-            this.configureButton.Size = new System.Drawing.Size(136, 33);
-            this.configureButton.TabIndex = 0;
-            this.configureButton.Text = " Configure...";
-            this.configureButton.UseVisualStyleBackColor = true;
-            this.configureButton.Click += new System.EventHandler(this.configureButton_Click);          
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configureFilePathsToolStripMenuItem,
+            this.loadEventDataToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Text = "File";
             // 
-            // HeatController
+            // configureFilePathsToolStripMenuItem
+            // 
+            this.configureFilePathsToolStripMenuItem.Name = "configureFilePathsToolStripMenuItem";
+            this.configureFilePathsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configureFilePathsToolStripMenuItem.Text = "Configure File Paths";
+            this.configureFilePathsToolStripMenuItem.Click += new System.EventHandler(this.ConfigureFilePathMenuItem_Click);
+            // 
+            // loadEventDataToolStripMenuItem
+            // 
+            this.loadEventDataToolStripMenuItem.Name = "loadEventDataToolStripMenuItem";
+            this.loadEventDataToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.loadEventDataToolStripMenuItem.Text = "Load Event Data";
+            this.loadEventDataToolStripMenuItem.Click += new System.EventHandler(this.LoadEventDataMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitMenuItem_Click);
+            // 
+            // SwimModelView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(895, 396);
-            this.Controls.Add(this.panel1);
+            this.ClientSize = new System.Drawing.Size(895, 398);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "HeatController";
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
+            this.Name = "SwimModelView";
             this.Text = "OBS Swim Overlay Controller";
-            this.Load += new System.EventHandler(this.HeatController_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
-            this.panel1.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
+
+        private void InitializeOtherComponents()
+        {
+            this.updateEventNameButton.Click += (sender, EventArgs) => { UpdateEventNameButton_Click(sender, EventArgs, this.updateEventNameTextBox.Text); };
+            this.lane1UpdateButton.Click += (sender, EventArgs) => { LaneUpdateButton_Click(sender, EventArgs, Lane.Lane1, lane1TextBox.Text); };
+            this.lane2UpdateButton.Click += (sender, EventArgs) => { LaneUpdateButton_Click(sender, EventArgs, Lane.Lane2, lane2TextBox.Text); };
+            this.lane3UpdateButton.Click += (sender, EventArgs) => { LaneUpdateButton_Click(sender, EventArgs, Lane.Lane3, lane3TextBox.Text); };
+            this.lane4UpdateButton.Click += (sender, EventArgs) => { LaneUpdateButton_Click(sender, EventArgs, Lane.Lane4, lane4TextBox.Text); };
+            this.lane5UpdateButton.Click += (sender, EventArgs) => { LaneUpdateButton_Click(sender, EventArgs, Lane.Lane5, lane5TextBox.Text); };
+            this.lane6UpdateButton.Click += (sender, EventArgs) => { LaneUpdateButton_Click(sender, EventArgs, Lane.Lane6, lane6TextBox.Text); };
+        }        
 
         #endregion
 
@@ -514,8 +548,11 @@ namespace SwimController
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button configureButton;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configureFilePathsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadEventDataToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
     }
 }
 

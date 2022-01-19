@@ -62,28 +62,40 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="loader\HtmlLoader.cs" />
-    <Compile Include="model\ConfigurationModel.cs" />
-    <Compile Include="ConfigureController.cs">
+    <Compile Include="controller\EventController.cs" />
+    <Compile Include="parser\HtmlParser.cs" />
+    <Compile Include="modelview\ConfigureEventModelView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConfigureController.Designer.cs">
-      <DependentUpon>ConfigureController.cs</DependentUpon>
+    <Compile Include="modelview\ConfigureEventModelView.Designer.cs">
+      <DependentUpon>ConfigureEventModelView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="modelview\ConfigureModelView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="modelview\ConfigureModelView.Designer.cs">
+      <DependentUpon>ConfigureModelView.cs</DependentUpon>
     </Compile>
     <Compile Include="model\Event.cs" />
-    <Compile Include="HeatController.cs">
+    <Compile Include="model\FilePathConfiguration.cs" />
+    <Compile Include="model\Lane.cs" />
+    <Compile Include="modelview\SwimModelView.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HeatController.Designer.cs">
-      <DependentUpon>HeatController.cs</DependentUpon>
+    <Compile Include="modelview\SwimModelView.Designer.cs">
+      <DependentUpon>SwimModelView.cs</DependentUpon>
     </Compile>
+    <Compile Include="parser\CsvParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="ConfigureController.resx">
-      <DependentUpon>ConfigureController.cs</DependentUpon>
+    <EmbeddedResource Include="modelview\ConfigureEventModelView.resx">
+      <DependentUpon>ConfigureEventModelView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="HeatController.resx">
-      <DependentUpon>HeatController.cs</DependentUpon>
+    <EmbeddedResource Include="modelview\ConfigureModelView.resx">
+      <DependentUpon>ConfigureModelView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="modelview\SwimModelView.resx">
+      <DependentUpon>SwimModelView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

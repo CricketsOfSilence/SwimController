@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObsOverlay.model;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -6,23 +7,18 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace SwimController.loader
+namespace ObsOverlay.parser
 {
-    public class HtmlLoader
+    public class HtmlParser
     {
 
         private const string EVENT_NAME_REGEX = @"Event\s+\d+\s+(Girls|Boys)\s+(\d{1,} (Yard|mtr))\s+(Medley Relay|Freestyle|IM|Butterfly|Backstroke|Freestyle Relay|Diving|Breaststroke)";
         private const string RECORDS_REGEX = @"{0} (\d+ \d+ \d+";
 
-        public static List<Event> Load(String fileLocation)
-        {
-            List<Event> events = new List<Event>();
-            
-            if (!File.Exists(fileLocation))
-            {
-                throw new FileNotFoundException(String.Format("Can't find {0}.", fileLocation));
-            }
-
+        public static Event Load(String fileLocation)
+        {            
+            Event temp = new Event();
+             
             string data = File.ReadAllText(fileLocation);
             // String all HTML
             data = Regex.Replace(data, "<.+?>", " ");
@@ -55,8 +51,10 @@ namespace SwimController.loader
                     }
                 }
             }
-            
-            return events;
+
+            return temp;
         }
+
+        //private static Event 
     }
 }

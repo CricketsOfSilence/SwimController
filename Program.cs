@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace SwimController
+namespace ObsOverlay
 {
     static class Program
     {
@@ -16,7 +16,7 @@ namespace SwimController
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new HeatController());
+            Application.Run(new SwimModelView());
         }
     }
 }
